@@ -12,10 +12,12 @@ use App\Http\Controllers\RoutePlanController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\TargetMetricController;
 use App\Http\Controllers\TargetController;
+use App\Http\Controllers\UserController;
 
 Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'authenticate');
     Route::post('register', 'register');
+    Route::post('login-by-google', 'loginByGoogle');
 });
 
 Route::post('profile/verify-email', [LoginController::class, 'verifyEmail']);
@@ -70,4 +72,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user-with-targets', [TargetController::class, 'getUsersWithTarget']);
 
     Route::post('/assign-targets', [TargetController::class, 'assignTargets']);
+
+    Route::get('users', [UserController::class, 'index']);
+
+    Route::post('add-user', [UserController::class, 'add_user']);
 });

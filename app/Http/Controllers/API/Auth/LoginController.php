@@ -320,7 +320,7 @@ class LoginController extends Controller
      *after saving the user details or authenticating the user, you can
      *generate a token for the user and return it to the user
      */
-    public function login(Request $request)
+    public function loginByGoogle(Request $request)
     {
         try {
             $googleUser = Socialite::driver('google')->userFromToken($request->token);
