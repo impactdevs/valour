@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\ContactController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,3 +19,6 @@ use App\Http\Controllers\TemplateController;
 // });
 
 Route::get ('/', [TemplateController::class, 'home']);
+
+
+Route::post('/contact/send_email', [ContactController::class, 'sendEmail'])->name('contact.sendEmail');

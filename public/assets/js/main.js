@@ -18,11 +18,11 @@
       return [...document.querySelectorAll(el)]
     } else {
       return document.querySelector(el)
-    }
+    } 
   }
-
+ 
   /**
-   * Easy event listener function
+    * Easy event listener function
    */
   const on = (type, el, listener, all = false) => {
     let selectEl = select(el, all)
