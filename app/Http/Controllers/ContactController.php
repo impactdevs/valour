@@ -26,7 +26,7 @@ class ContactController extends Controller
             'message' => $request->message,
         ];
 
-        $recipientEmail = 'dev.david1300@gmail.com'; 
+        $recipientEmail = 'info@impactoutsourcing.co.ug'; 
 
         Mail::to($recipientEmail)
             ->send(new ContactMail($details, $request->email));
