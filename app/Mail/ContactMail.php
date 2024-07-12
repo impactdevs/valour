@@ -26,6 +26,7 @@ class ContactMail extends Mailable
         //mail details 
 
         $this->details = $details;
+        //$this->senderEmail = $senderEmail;
         // $this ->subject = $subject;
         // $this->message = $body;
     }
@@ -40,9 +41,12 @@ class ContactMail extends Mailable
         );
     }
 
-    public function build ()
+    public function build()
     {
-        return $this -> view ('layouts.index');
+        return $this->from($this->details['email'])
+        ->subject($this->details['subject'])
+        ->view('mail.email')
+        ->with('details', $this->details);
     }
 
     /**
@@ -51,7 +55,7 @@ class ContactMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'layouts.index',
+            view: 'mail.email',
         );
     }
 
