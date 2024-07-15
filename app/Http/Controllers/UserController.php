@@ -23,6 +23,12 @@ class UserController extends Controller
     public function add_user(Request $request)
     {
         try {
+            // email must be unque, use validation
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required'
+            ]);
             $user = new User();
 
             $user->name = $request->name;
@@ -37,7 +43,7 @@ class UserController extends Controller
 
             return response()->json(['data' => $user, 'message' => 'User created successfully'], 201);
         } catch (Exception $e) {
-            return response()->json(['message' => 'User creation failed'.$e->getMessage()], 409);
+            return response()->json(['message' => 'User creation failed:'.$e->getMessage()], 409);
         }
     }
 }
