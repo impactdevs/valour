@@ -15,9 +15,8 @@
       <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5" data-aos="fade-left">
         <h3>Valour CRM App</h3>
         <p>
-        Welcome to Valour CRM, the ultimate mobile app designed to revolutionize your microfinance and insurance operations. Our user-friendly platform empowers businesses to streamline customer relationships, manage financial products, and enhance productivity. With Valour CRM, you'll have all the tools you need to efficiently handle client interactions, schedule appointments, and stay organized on the go. Transform your customer relationship management with Valour and take your business to new heights.
+        Welcome to Valour CRM, the ultimate mobile app designed to revolutionize your business operation across all industry sectors. like microfinance, insurance, product  manufacturing and  processing, transportation and logistics, retail, automotive, health care etc.
         </p>
-
         <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
           <div class="icon"><i class="bx bx-fingerprint"></i></div>
           <h4 class="title"><a href="">Quotation Module</a></h4>
@@ -656,7 +655,8 @@
 
       <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
 
-        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+        <form action="{{ url('/contact/send_email') }}" method="post" role="form" class="php-email-form">
+        @csrf
           <div class="row">
             <div class="col-md-6 form-group">
               <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -675,6 +675,17 @@
             <div class="loading">Loading</div>
             <div class="error-message"></div>
             <div class="sent-message">Your message has been sent. Thank you!</div>
+              <!-- Success Message -->
+              @if (session('success'))
+                  <div class="alert alert-success">
+                      {{ session('success') }}
+                  </div>
+              @endif
+              @if (session('error'))
+                  <div class="alert alert-danger">
+                      {{ session('error') }}
+                  </div>
+              @endif
           </div>
           <div class="text-center"><button type="submit">Send Message</button></div>
         </form>
