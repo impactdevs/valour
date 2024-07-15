@@ -43,7 +43,21 @@ class UserController extends Controller
 
             return response()->json(['data' => $user, 'message' => 'User created successfully'], 201);
         } catch (Exception $e) {
-            return response()->json(['message' => 'User creation failed:'.$e->getMessage()], 409);
+            return response()->json(['message' => 'User creation failed:' . $e->getMessage()], 409);
+        }
+    }
+
+
+    public function delete_user(Request $request)
+    {
+        // implement delete user
+        $delete = User::where('email', $request->email)->delete();
+
+        if ($delete) {
+            return response()->json(['message' => 'User deleted successfully'], 200);
+        } else {
+            // user not found
+            return response()->json(['message' => 'User not found'], 404);
         }
     }
 }
