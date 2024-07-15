@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Added;
 
 class UserController extends Controller
 {
@@ -19,14 +22,22 @@ class UserController extends Controller
 
     public function add_user(Request $request)
     {
-        $user = new User();
+        try {
+            $user = new User();
 
-        $user->name = "";
-        $user->email = $request->email;
-        $user->password = "";
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
 
-        $user->save();
+            // Send email to user
+            Mail::to($user->email)->send(new Added($user, $request->password));
 
-        return response()->json(['data' => $user, 'message' => 'User created successfully'], 201);
+
+            $user->save();
+
+            return response()->json(['data' => $user, 'message' => 'User created successfully'], 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'User creation failed'.$e->getMessage()], 409);
+        }
     }
 }
