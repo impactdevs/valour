@@ -54,10 +54,27 @@ class UserController extends Controller
         $delete = User::where('email', $request->email)->delete();
 
         if ($delete) {
-            return response()->json(['message' => 'User deleted successfully'], 200);
+            return response()->json(['success' => true,'message' => 'User deleted successfully'], 200);
         } else {
             // user not found
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json(['success' => false,'message' => 'User not found'], 404);
         }
     }
+
+    // reactivate user
+    public function reactivate_user(Request $request)
+    {
+        // implement reactivate user
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            $user->deleted_at = null;
+            $user->save();
+            return response()->json(['success' => true, 'message' => 'User reactivated successfully'], 200);
+        } else {
+            // user not found
+            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        }
+    }
+
 }

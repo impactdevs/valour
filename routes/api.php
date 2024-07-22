@@ -78,4 +78,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('add-user', [UserController::class, 'add_user']);
 
     Route::post('delete-user', [UserController::class, 'delete_user']);
+
+    Route::post('reactivate-user', [UserController::class, 'reactivate_user']);
 });
