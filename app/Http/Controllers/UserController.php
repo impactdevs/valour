@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Reactivated;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -71,6 +72,8 @@ class UserController extends Controller
         if ($user) {
             $user->deleted_at = null;
             $user->save();
+            // send email to user
+            Mail::to($user->email)->send(new Reactivated($user->name));
             return response()->json(['success' => true, 'message' => 'User reactivated successfully'], 200);
         } else {
             // user not found
