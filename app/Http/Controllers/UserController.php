@@ -12,7 +12,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        //include deleted users
+        $users = User::withTrashed()->get();
 
         return response()->json([
             'message' => 'users retrieved successfully',
