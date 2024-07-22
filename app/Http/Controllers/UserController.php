@@ -67,11 +67,12 @@ class UserController extends Controller
     public function reactivate_user(Request $request)
     {
         // implement reactivate user
-        $user = User::where('email', $request->email)->first();
+        $user = User::withTrashed() // Include soft deleted users
+                    ->where('email', $request->email)
+                    ->first();
 
         if ($user) {
-            $user->deleted_at = null;
-            $user->save();
+            $user->restore(); // Restore the soft deleted user
             // send email to user
             Mail::to($user->email)->send(new Reactivated($user->name));
             return response()->json(['success' => true, 'message' => 'User reactivated successfully'], 200);
@@ -80,5 +81,6 @@ class UserController extends Controller
             return response()->json(['success' => false, 'message' => 'User not found'], 404);
         }
     }
+
 
 }
