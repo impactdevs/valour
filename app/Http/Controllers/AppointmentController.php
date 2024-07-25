@@ -16,32 +16,18 @@ class AppointmentController extends Controller
         if ($user->role == 'admin') {
             //get every appointment and process it
             $appointments = Appointment::with([
-                'visit' => function ($query) {
-                    $query->select('id', 'business_id'); // Assuming 'business_id' is the foreign key in the 'visits' table
+                'mapping' => function ($query) {
+                    $query->select('id', 'business_name', 'business_email_contact', 'business_telephone_contact'); // Assuming 'business_id' is the foreign key in the 'visits' table
                 }
-            ])
-                ->with([
-                    'visit.visit' => function ($query) {
-                        $query->select('id', 'business_name'); // Assuming 'business_name' is the column in the 'mappings' table
-                    }
-                ])
-                ->get();
+            ])->get();
         } else {
             // Retrieve maintenances with user, visit, and business information
             $appointments = $user->appointments()
                 ->with([
-                    'visit' => function ($query) {
-                        $query->select('id', 'business_id'); // Assuming 'business_id' is the foreign key in the 'visits' table
+                    'mapping' => function ($query) {
+                        $query->select('id', 'business_name', 'business_email_contact', 'business_telephone_contact'); // Assuming 'business_id' is the foreign key in the 'visits' table
                     }
-                ])
-                ->with([
-                    'visit.visit' => function ($query) {
-                        $query->select('id', 'business_name'); // Assuming 'business_name' is the column in the 'mappings' table
-                    }
-                ])
-                ->get();
-
-
+                ])->get();
         }
         return response()->json(
             [
@@ -50,6 +36,32 @@ class AppointmentController extends Controller
             ]
             ,
             200
+        );
+    }
+
+    public function store()
+    {
+        $user = Auth::user();
+        $data = request()->all();
+        //validate the request
+        request()->validate([
+            'mapping_id' => 'required|exists:mappings,id',
+            'appointment_date_time' => 'required',
+            'appointment_purpose' => 'required'
+        ]);
+        $appointment = new Appointment();
+        $appointment->user_id = $user->id;
+        $appointment->mapping_id = $data['mapping_id'];
+        $appointment->appointment_date_time = $data['appointment_date_time'];
+        $appointment->appointment_purpose = $data['appointment_purpose'];
+        $appointment->save();
+        return response()->json(
+            [
+                'message' => 'successfully created an appointment',
+                'data' => $appointment
+            ]
+            ,
+            201
         );
     }
 }

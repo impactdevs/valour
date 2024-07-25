@@ -3,6 +3,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\VisitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\LoginController;
@@ -59,6 +60,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/deliveries', [DeliveryController::class, 'index']);
 
     Route::get('/appointments', [AppointmentController::class, 'index']);
+
+    Route::post('/add-appointment', [AppointmentController::class, 'store']);
+
+    Route::get('/meetings', [MeetingController::class, 'index']);
 
     Route::get('/maintenances', [MaintenanceController::class, 'index']);
 

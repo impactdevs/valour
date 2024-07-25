@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Appointment extends Model
+class Meeting extends Model
 {
     use HasFactory;
 
-    public function mapping()
+    public function visit()
     {
-        return $this->belongsTo('App\Models\Mapping', 'mapping_id');
+        return $this->belongsTo('App\Models\Visit', 'visit_id');
     }
 }

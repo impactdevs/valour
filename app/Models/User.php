@@ -67,6 +67,12 @@ class User extends Authenticatable
         return $this->hasMany(Appointment::class);
     }
 
+    //meetings
+    public function meetings()
+    {
+        return $this->hasMany(Meeting::class);
+    }
+
     //deliveries
     public function deliveries()
     {
@@ -79,5 +85,5 @@ class User extends Authenticatable
         return $this->hasMany(Target::class);
     }
 
-    //user can have 
+    //user can have
 }

@@ -7,6 +7,7 @@ use App\Models\DeliveryProduct;
 use App\Models\Demo;
 use App\Models\Maintenance;
 use App\Models\MaintenanceProduct;
+use App\Models\Meeting;
 use App\Models\Sale;
 use App\Models\SaleProduct;
 use Illuminate\Http\Request;
@@ -101,7 +102,7 @@ class VisitController extends Controller
                 'meeting_notes' => 'required|string',
             ]);
 
-            $appointment = new Appointment();
+            $appointment = new Meeting();
             $appointment->meeting_date = $request->input('meeting_date');
             $appointment->meeting_start_time = $request->input('meeting_start_time');
             $appointment->meeting_end_time = $request->input('meeting_end_time');

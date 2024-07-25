@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->string('meeting_date');
-            $table->string('meeting_start_time');
-            $table->string('meeting_end_time');
-            $table->longText('meeting_notes');
+            $table->string('appointment_date_time');
+            $table->string('appointment_purpose');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('visit_id');
-            $table->foreign('visit_id')->references('id')->on('visits');
+            $table->unsignedBigInteger('mapping_id');
+            $table->foreign('mapping_id')->references('id')->on('mappings');
             $table->timestamps();
         });
     }
