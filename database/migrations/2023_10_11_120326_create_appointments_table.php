@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->string('appointment_date_time');
+            $table->datetime('appointment_date_time');
             $table->string('appointment_purpose');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

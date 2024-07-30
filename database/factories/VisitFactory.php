@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Appointment;
 use App\Models\Delivery;
 use App\Models\Demo;
 use App\Models\Maintenance;
+use App\Models\Meeting;
 use App\Models\Sale;
 use App\Models\Visit;
 use App\Models\Mapping;
@@ -61,7 +61,7 @@ class VisitFactory extends Factory
                 } elseif ($visit_purpose == "Demo") {
                     Demo::factory()->create(['visit_id' => $visit->id, 'user_id' => $user_id]);
                 } elseif ($visit_purpose == "Appointment") {
-                    Appointment::factory()->create(['visit_id' => $visit->id, 'user_id' => $user_id]);
+                    Meeting::factory()->create(['visit_id' => $visit->id, 'user_id' => $user_id]);
                 }
             });
         }

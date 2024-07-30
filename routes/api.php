@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\MaintenanceController;
@@ -53,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update']);
     Route::delete('/products/{product}', [ProductController::class, 'delete']);
     Route::put('/update-quantity/{product}', [ProductController::class, 'updateQuantity']);
-
+    Route::get('/dashboard-counter', [DashboardController::class, 'index']);
     Route::get('/visits', [VisitController::class, 'index']);
     Route::post('/visits', [VisitController::class, 'store']);
 
@@ -62,6 +63,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/appointments', [AppointmentController::class, 'index']);
 
     Route::post('/add-appointment', [AppointmentController::class, 'store']);
+
+    Route::put('/update-appointment/{appointment}', [AppointmentController::class, 'update']);
+
+    Route::delete('/delete-appointment/{appointment}', [AppointmentController::class, 'destroy']);
 
     Route::get('/meetings', [MeetingController::class, 'index']);
 

@@ -64,4 +64,36 @@ class AppointmentController extends Controller
             201
         );
     }
+
+    //update an appointment
+    public function update(Appointment $appointment)
+    {
+        //use update method to update the appointment
+        $appointment->update(request()->all());
+
+        return response()->json(
+            [
+                'message' => 'successfully updated an appointment',
+                'data' => $appointment
+            ]
+            ,
+            200
+        );
+    }
+
+    //delete an appointment
+    public function destroy(Appointment $appointment)
+    {
+        //delete the appointment
+        $appointment->delete();
+
+        return response()->json(
+            [
+                'message' => 'successfully deleted an appointment',
+                'data' => $appointment
+            ]
+            ,
+            200
+        );
+    }
 }
