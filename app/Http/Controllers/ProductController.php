@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use App\Models\SaleProduct;
 
 class ProductController extends Controller
 {
@@ -113,6 +114,37 @@ class ProductController extends Controller
         return response()->json([
             'message' => 'coffee pods retrieved successfully',
             'data' => $coffeePods
+        ], 200);
+    }
+
+
+    //inventory statistics
+    public function statistics(){
+        //get the total number of coffee machines
+        $totalProducts = Product::where('type', 'coffee_machine')->sum('quantity');
+
+        //total sold coffee machines
+        $totalSoldProducts = SaleProduct::whereHas('product', function($query){
+            $query->where('type', 'coffee_machine');
+        })->sum('quantity');
+
+        //balance coffee machines
+        $balanceProducts = $totalProducts - $totalSoldProducts;
+
+        //get the total number of coffee product(sum of quantity)
+        $totalCoffeeProducts = Product::where('type', 'coffee_product')->sum('quantity');
+
+        //total sold coffee products
+        $totalSoldCoffeeProducts = SaleProduct::whereHas('product', function($query){
+            $query->where('type', 'coffee_product');
+        })->sum('quantity');
+
+        //balance coffee products
+        $balanceCoffeeProducts = $totalCoffeeProducts - $totalSoldCoffeeProducts;
+
+        return response()->json([
+            'balance_coffee_machines' => $balanceProducts,
+            'balance_coffee_products' => $balanceCoffeeProducts,
         ], 200);
     }
 }

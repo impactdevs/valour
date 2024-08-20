@@ -54,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update']);
     Route::delete('/products/{product}', [ProductController::class, 'delete']);
     Route::put('/update-quantity/{product}', [ProductController::class, 'updateQuantity']);
+    Route::get('/product-summary', [ProductController::class, 'statistics']);
+    
     Route::get('/dashboard-counter', [DashboardController::class, 'index']);
     Route::get('/visits', [VisitController::class, 'index']);
     Route::post('/visits', [VisitController::class, 'store']);
