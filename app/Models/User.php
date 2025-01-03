@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'tenant_id',
     ];
 
     /**
@@ -85,5 +86,9 @@ class User extends Authenticatable
         return $this->hasMany(Target::class);
     }
 
-    //user can have
+    //one user belongs to one mapping
+    public function mapping()
+    {
+        return $this->hasOne(Mapping::class);
+    }
 }

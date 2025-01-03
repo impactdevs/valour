@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\ResetPasswordEmail;
 use App\Mail\VerifyEmail;
 use App\Models\Mapping;
+use App\Models\Tenant;
 use App\Models\User;
 use App\Models\VerificationCode;
 use Illuminate\Http\Request;
@@ -49,13 +50,18 @@ class LoginController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required'],
+            'tenant_id' => ['required', 'exists:' . Tenant::class . ',id'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'tenant_id' => $request->tenant_id,
         ]);
+
+        //type
+        $type = $request->type;
 
         //first check if user creation was successful
         if (!$user) {
@@ -64,28 +70,36 @@ class LoginController extends Controller
             ], 500);
         }
 
-        // //generate random code
-        // $code = rand(100000, 999999);
+        //check if $type is admin and set role to admin
+        if ($type == 'admin') {
+            $user->role = 'admin';
+            $user->save();
+        }
 
-        // //save code to database
-        // $verificationCode = new VerificationCode();
-        // $verificationCode->email = $user->email;
-        // $verificationCode->code = $code;
-        // $verificationCode->save();
+        //generate random code
+        $code = rand(100000, 999999);
 
-        // if(!$verificationCode){
-        //     return response()->json([
-        //         'message' => 'Account creation failed',
-        //     ], 500);
-        // }
+        //save code to database
+        $verificationCode = new VerificationCode();
+        $verificationCode->email = $user->email;
+        $verificationCode->code = $code;
+        $verificationCode->save();
+
+        if (!$verificationCode) {
+            return response()->json([
+                'message' => 'Account creation failed',
+            ], 500);
+        }
         //send email to the user
-        // Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
+        Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
 
         return response()->json([
             'message' => 'User created successfully',
             'user' => $user
         ]);
     }
+
+
 
     public function logout(Request $request)
     {

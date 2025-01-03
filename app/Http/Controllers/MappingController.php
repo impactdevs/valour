@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ItemOfInterest;
 use App\Models\ProductOfInterest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Mapping; // Assuming Mapping is your model
 

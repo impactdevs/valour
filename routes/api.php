@@ -5,6 +5,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\TenantController;
 use App\Http\Controllers\VisitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\LoginController;
@@ -21,6 +22,10 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login-by-google', 'loginByGoogle');
 });
+
+
+//tenant routes
+Route::post('add-tenant', [TenantController::class, 'store']);
 
 Route::post('profile/verify-email', [LoginController::class, 'verifyEmail']);
 Route::post('profile/verify-password-reset-email', [LoginController::class, 'verifyPasswordResetEmail']);
@@ -55,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/products/{product}', [ProductController::class, 'delete']);
     Route::put('/update-quantity/{product}', [ProductController::class, 'updateQuantity']);
     Route::get('/product-summary', [ProductController::class, 'statistics']);
-    
+
     Route::get('/dashboard-counter', [DashboardController::class, 'index']);
     Route::get('/visits', [VisitController::class, 'index']);
     Route::post('/visits', [VisitController::class, 'store']);

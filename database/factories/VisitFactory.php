@@ -29,7 +29,8 @@ class VisitFactory extends Factory
     public function definition()
     {
         //get existing mapping and user ids
-        $mapping_ids = Mapping::pluck('id');
+        $mapping_ids = Mapping::withoutGlobalScopes()->pluck('id')->toArray();
+
         $user_ids = User::pluck('id');
 
         //let visit purpose come from ["Maintenance", "Delivery", "Appointment", "Sale", "Demo"]

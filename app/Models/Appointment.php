@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Appointment extends Model
 {
@@ -15,6 +16,19 @@ class Appointment extends Model
         'appointment_date_time',
         'appointment_purpose'
     ];
+
+        /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope('appointment', function (Builder $builder) {
+
+            $users = User::where('tenant_id', auth()->user()->tenant_id)->pluck('id');
+            $builder->whereIn('user_id', $users);
+
+        });
+    }
 
     public function mapping()
     {

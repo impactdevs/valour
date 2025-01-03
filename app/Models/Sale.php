@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Sale extends Model
 {
@@ -13,6 +14,16 @@ class Sale extends Model
         'user_id',
         'visit_id'
     ];
+
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('sale', function (Builder $builder) {
+
+            $users = User::where('tenant_id', auth()->user()->tenant_id)->pluck('id');
+            $builder->whereIn('user_id', $users);
+        });
+    }
 
     public function visit()
     {
