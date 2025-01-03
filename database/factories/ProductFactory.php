@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -29,6 +30,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->sentence,
             'unit' => $this->faker->optional()->word,
             'type' => $this->faker->optional()->word,
+            'tenant_id' => Tenant::query()->inRandomOrder()->value('id'),
         ];
     }
 }

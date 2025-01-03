@@ -21,6 +21,8 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        //get the tenant id of the logged in user
+        $tenant_id = auth()->user()->tenant_id;
         $product = Product::create([
             'product_name' => $request->product_name,
             'price' => $request->price,
@@ -29,6 +31,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'unit' => $request->unit,
             "type" => $request->type,
+            "tenant_id" => $tenant_id,
         ]);
 
         if (!$product) {
@@ -119,12 +122,13 @@ class ProductController extends Controller
 
 
     //inventory statistics
-    public function statistics(){
+    public function statistics()
+    {
         //get the total number of coffee machines
         $totalProducts = Product::where('type', 'coffee_machine')->sum('quantity');
 
         //total sold coffee machines
-        $totalSoldProducts = SaleProduct::whereHas('product', function($query){
+        $totalSoldProducts = SaleProduct::whereHas('product', function ($query) {
             $query->where('type', 'coffee_machine');
         })->sum('quantity');
 
@@ -135,7 +139,7 @@ class ProductController extends Controller
         $totalCoffeeProducts = Product::where('type', 'coffee_product')->sum('quantity');
 
         //total sold coffee products
-        $totalSoldCoffeeProducts = SaleProduct::whereHas('product', function($query){
+        $totalSoldCoffeeProducts = SaleProduct::whereHas('product', function ($query) {
             $query->where('type', 'coffee_product');
         })->sum('quantity');
 

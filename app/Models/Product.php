@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
@@ -16,6 +17,14 @@ class Product extends Model
         'category',
         'description',
         'type',
-        'unit'
+        'unit',
+        'tenant_id',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('mapping', function (Builder $builder) {
+            $builder->where('tenant_id', auth()->user()->tenant_id);
+        });
+    }
 }
