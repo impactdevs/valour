@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DemoController;
@@ -45,6 +46,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/mappings', [MappingController::class, 'store']);
 
     Route::get('/contacts', [MappingController::class, 'contacts']);
+
+    //send email
+    Route::post('/send-email', [ContactController::class, 'sendEmail']);
 
     Route::get('/route-plans', [RoutePlanController::class, 'index']);
     Route::post('/route-plans', [RoutePlanController::class, 'store']);

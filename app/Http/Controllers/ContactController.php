@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mapping;
 use Illuminate\Http\Request;
 use Mail;
 use App\Mail\ContactMail;
@@ -10,41 +11,49 @@ use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
-    //
-        public function sendEmail(Request $request)
+    //send a single email
+    public function sendEmail(Request $request)
     {
-        
+
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'recipient_id' => 'required|exists:mappings,id',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
         ]);
-    
+
+        //get recipient email and name
+        $recipient = Mapping::find($validated['recipient_id']);
+        $recipientEmail = $recipient->email;
+        $recipientName = $recipient->name;
+
         $details = [
-            'name' => $request->name,
-            'email' => $request->email,
+            'name' => $recipientName,
+            'email' => $recipientEmail,
             'subject' => $request->subject,
             'message' => $request->message,
         ];
-    
-        $recipientEmail = 'dev.david1300@gmail.com';
-       // $senderEmail = $request->email;
-    
+
+        $recipientEmail = $request->email;
+        // $senderEmail = $request->email;
+
         try {
             Mail::to($recipientEmail)
-                ->send(new ContactMail($details, $request->email));
-            
-            return back()->with('success', 'Thank you for contacting us, your message has been received.');
+                ->send(new ContactMail($details, $recipientEmail));
+
+            return response()->json(['message' => 'Email sent successfully'], 200);
         } catch (\Exception $e) {
             // Log the error for debugging
             Log::error('Failed to send email: ' . $e->getMessage());
- 
-            return back()->with('error', 'Failed to send message. Please try again later.');
-        }
 
-        
+            return response()->json(['message' => 'Failed to send email'], 500);
+        }
     }
+
+    //send a single email
+
+    //email status i.e clicked, opened, delivered
+
+    //send a single whatsapp message
 
 
 }
